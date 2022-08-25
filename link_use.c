@@ -52,7 +52,7 @@ void mat_push_back(node_mat* m, mat* data)
 	//在尾部插入
 	m->next = n;
 }
-/*
+
 //在链表头部插入节点
 void push_fornt(node* l, elem_type data)
 {
@@ -74,7 +74,8 @@ void insert(node* l,unsigned int pos, elem_type data)
 	n->next = l->next;
 	l->next = n;
 
-}*/
+}
+
 //删除某个节点
 //返回0失败，返回1成功
 char* mat_dle(void)
@@ -137,7 +138,8 @@ int mat_find(node_mat* m, char* ser)
 	printf("物资剩余：%d\n",m->data->mat_num);
 	return 1;
 }
-/*
+
+
 //清空，删除所有存放有数据元素的节点，即删除所有元素
 void clear(node* l)
 {
@@ -150,7 +152,7 @@ void clear(node* l)
 	}
 	l->next = NULL;
 }
-*/
+
 /*
 //打印链表所有的节点  
 void show(node* l)
