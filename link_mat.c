@@ -12,18 +12,7 @@ node_mat* mat_create(void)
 
 	return n;
 }
-/*
-//链表的销毁
-void destroy(node* l)
-{
-	node* p = NULL;
-	while(l != NULL)
-	{
-		p = l->next;
-		free(p);
-		l = l->next;
-	}
-}*/
+
 mat* mat_tianjia(void)
 {
 	mat* s = (mat*)malloc(sizeof(mat));
@@ -52,29 +41,7 @@ void mat_push_back(node_mat* m, mat* data)
 	//在尾部插入
 	m->next = n;
 }
-/*
-//在链表头部插入节点
-void push_fornt(node* l, elem_type data)
-{
-    node* n = (node*)malloc(sizeof(node));
-    n->data = data;
-    n->next = l->next;
 
-	l->next = n;
-}
-
-//任意位置位置插入
-void insert(node* l,unsigned int pos, elem_type data)
-{
-	node* n =(node*)malloc(sizeof(node));
-	n->data = data;
-	
-	while(pos-- && l->next != NULL) l = l->next;
-
-	n->next = l->next;
-	l->next = n;
-
-}*/
 //删除某个节点
 //返回0失败，返回1成功
 char* mat_dle(void)
@@ -101,7 +68,7 @@ int mat_updata(node_mat* m, char* ser)
 {
 	mat* s = (mat*)malloc(sizeof(mat));
 	m = m->next;
-	while(m->next != NULL && strcmp(m->next->data->mat_ser, ser)) m = m->next;
+	while(m != NULL && strcmp(m->data->mat_ser, ser)) m = m->next;
 	if(m == NULL) return 0;
 	printf("修改前物资信息：");
 	printf("物资编号：%s\n",m->data->mat_ser);
@@ -137,26 +104,4 @@ int mat_find(node_mat* m, char* ser)
 	printf("物资剩余：%d\n",m->data->mat_num);
 	return 1;
 }
-/*
-//清空，删除所有存放有数据元素的节点，即删除所有元素
-void clear(node* l)
-{
-	node *p =l->next, *q =NULL;
-	while(p != NULL)
-	{
-		q = p->next;
-		free(p);
-		q = p;
-	}
-	l->next = NULL;
-}
-*/
-/*
-//打印链表所有的节点  
-void show(node* l)
-{
-	l = l->next;
-	while(l != NULL) printf("%d ", l->data), l = l->next;
-}
-*/
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "sys.h"
                   
 
@@ -12,18 +13,7 @@ node* create(void)
 
 	return n;
 }
-/*
-//链表的销毁
-void destroy(node* l)
-{
-	node* p = NULL;
-	while(l != NULL)
-	{
-		p = l->next;
-		free(p);
-		l = l->next;
-	}
-}*/
+
 struct user* tianjia(void)
 {
 	struct user* s = (struct user*)malloc(sizeof(struct user));
@@ -31,16 +21,20 @@ struct user* tianjia(void)
 	printf("请输入工号：");
 	scanf("%d",&s->Job_ID);
 	printf("请输入名字：");
-	scanf("%s",s->name);
+	scanf("%20s",s->name);
 	printf("请输入性别（0->女，1->男）：");
-	getchar();
+
 	scanf("%c",&s->sex);
 	printf("请输入身份证号码：");
 	scanf("%s",s->ID);
 	getchar();
 	printf("请输入电话：");
-	scanf("%s",s->Telephone);
-	
+	scanf("%11s",s->Telephone);
+	buffer();
+	printf("请输入用户密码：");
+	scanf("%19s",s->password);
+	buffer();
+
 	return s;
 }
 //在链表尾部插入节点
@@ -55,29 +49,7 @@ void push_back(node* l, struct user* data)
 	//在尾部插入
 	l->next = n;
 }
-/*
-//在链表头部插入节点
-void push_fornt(node* l, elem_type data)
-{
-    node* n = (node*)malloc(sizeof(node));
-    n->data = data;
-    n->next = l->next;
 
-	l->next = n;
-}
-
-//任意位置位置插入
-void insert(node* l,unsigned int pos, elem_type data)
-{
-	node* n =(node*)malloc(sizeof(node));
-	n->data = data;
-	
-	while(pos-- && l->next != NULL) l = l->next;
-
-	n->next = l->next;
-	l->next = n;
-
-}*/
 //删除某个节点
 //返回0失败，返回1成功
 int dle(void)
@@ -104,7 +76,7 @@ int updata(node* l, int Job_ID)
 {
 	struct user* s = (struct user*)malloc(sizeof(struct user));
 	l = l->next;
-	while(l->next !=NULL && l->data->Job_ID != Job_ID) l = l->next;
+	while(l !=NULL && l->data->Job_ID != Job_ID) l = l->next;
 	if(l == NULL) return 0;
 	printf("修改前用户信息：");
 	printf("工号：%d\n",l->data->Job_ID);

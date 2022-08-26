@@ -3,7 +3,7 @@
 #include <string.h>
 #include "sys.h"
 void mam_sys_menu2(void);
-void mam_sys_menu3(void);
+static void mam_sys_menu3(void);
 void menu_con_find(void);
 
 
@@ -117,6 +117,7 @@ void menu1(void)
 			system("clear");
 			if(!mat_updata(m, mat_dle())) printf("无此人\n");
 			else printf("修改成功\n");
+//			use_push_back(k,m, use_tianjia());
 			mam_sys_menu2();
 			break;
 		}
@@ -124,122 +125,17 @@ void menu1(void)
 	}
 }
 
-void menu_con_find(void)
-{
-	printf("\n**********您以查找联系人界面**************\n");
-	printf("按姓名查找请输入：1\n");
-	printf("按电话查找请输入：2\n");
-	printf("按邮箱查找请输入：3\n");
-	printf("按备注查找请输入：4\n");
-	printf("按分组查找请输入：5\n");
-	printf("退出本系统请输入：0\n");
-}
-
-void menu_con_find1(void)
-{
-	while(1)
-	{
-		int menu;
-		menu_con_find();
-		 do
-        {
-            printf(">");
-            scanf("%d",&menu);
-            while(getchar() != '\n');
-            if(menu > 5 || menu < 0) printf("Input error\n");
-        }while(menu > 5 || menu < 0);
-		switch(menu)
-		{
-	case 0:
-			printf("感谢您的使用，下次再见！\n");
-			exit(0);
-			break;
-		
-	case 1:
-//			adm_con_find();
-		//	menu_con_find();
-			break;
-			
-	case 2:
-//			adm_con_find1();
-		//	menu_con_find();		
-			break;	
-	case 3:
-//			adm_con_find2();
-		//	menu_con_find();
-			break;
-	
-	case 4:
-//			adm_con_find3();
-		//	menu_con_find();
-			break;
-	case 5:
-//			adm_con_find4();
-		//	menu_con_find();
-			break;		
-		}
-	}
-}
-
-void menu_sta_find(void)
-{
-	printf("\n**********您以查找员工界面**************\n");
-	printf("按工号查找请输入：1\n");
-	printf("按名字查找请输入：2\n");
-	printf("身份证号查找输入：3\n");
-	printf("按电话查找请输入：4\n");
-	printf("退出本系统请输入：0\n");
-}
-void menu_sta_finds(void)
-{
-	while(1)
-	{
-		int menu;
-		menu_sta_find();
-		 do
-        {
-            printf(">");
-            scanf("%d",&menu);
-            while(getchar() != '\n');
-            if(menu > 4 || menu < 0) printf("Input error\n");
-        }while(menu > 4 || menu < 0);
-		switch(menu)
-		{
-	case 0:
-			printf("感谢您的使用，下次再见！\n");
-			exit(0);
-			break;
-		
-	case 1:
-//			adm_sta_find();
-		//	menu_con_find();
-			break;
-			
-	case 2:
-//			adm_sta_find1();
-		//	menu_con_find();		
-			break;	
-	case 3:
-//			adm_sta_find2();
-		//	menu_con_find();
-			break;
-	
-	case 4:
-//			adm_sta_find3();
-		//	menu_con_find();
-			break;
-		}
-	}
-}
-
-void mam_sys_menu3(void)
+static void mam_sys_menu3(void)
 {
 	printf("\n\t\t\t\t\t*********您以进入普通用户界面**************\n");
 	printf("\t\t\t\t\t\t修改自己用户密码请输入：1\n");
-	printf("\t\t\t\t\t\t查找自己相关信息请输入：2\n");
-	printf("\t\t\t\t\t\t查找联系人的信息请输入：3\n");
+	printf("\t\t\t\t\t\t借出物资请输入：2\n");
+	printf("\t\t\t\t\t\t归还物资请输入：3\n");
+	printf("\t\t\t\t\t\t查看物资借还记录请输入：4\n");
+	printf("\t\t\t\t\t\t查看本人相关信息请输入：5\n");
 	printf("\t\t\t\t\t\t退出本系统请输入0\n");
 }
+
 //普通用户登录界面
 void menu2(void)
 {
@@ -253,8 +149,8 @@ void menu2(void)
             printf(">");
             scanf("%d",&menu2);
             while(getchar() != '\n');
-            if(menu2 > 3 || menu2 < 0)  printf("Input error\n");
-        }while(menu2 > 3 || menu2 < 0);
+            if(menu2 > 5 || menu2 < 0)  printf("Input error\n");
+        }while(menu2 > 5 || menu2 < 0);
 		switch(menu2)
 		{
 	case 0:
@@ -270,13 +166,22 @@ void menu2(void)
 			
 	case 2:
 			system("clear");
-//			sta_fiad();
+			use_push_back(k,m,l, use_tianjia());
 			mam_sys_menu3();
 			break;	
 	case 3:
 			system("clear");
-//			menu_con_find1();		
+			if(!use_updata(m, k, use_dle())) printf("物资不存在或输入有误！！！\n");
 			mam_sys_menu3();
+			break;
+	case 4:
+			system("clear");
+			if(!use_find(k, dle())) printf("输入错误或没有借出此物资\n");
+			mam_sys_menu3();
+			break;
+	case 5:
+			system("clear");
+
 			break;
 		}
 	}

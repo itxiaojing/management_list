@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "sys.h"
-                  
+const char* weekday[] = {"日", "一", "二", "三", "四", "五", "六"};
+                
+void buffer(void)
+{
+	while(getchar() != '\n');
+}
 
 //创建空链表
 node_use* use_create(void)
@@ -12,153 +18,104 @@ node_use* use_create(void)
 
 	return n;
 }
-/*
-//链表的销毁
-void destroy(node* l)
-{
-	node* p = NULL;
-	while(l != NULL)
-	{
-		p = l->next;
-		free(p);
-		l = l->next;
-	}
-}*/
+
 use* use_tianjia(void)
 {
 	use* s = (use*)malloc(sizeof(use));
-	printf("请录入借出物资信息：\n");
+	printf("请录入物资借还信息：\n");
 	printf("请输入物资编号：");
-	scanf("%s",s->mat_ser);
-	getchar();
-	printf("请输入操作人工号：");
-	scanf("%d",s->Job_ID);
-	printf("请输入物资总：");
-	scanf("%d",&s->mat_sum);
-	printf("请输入物资余数 ：");
-	scanf("%d",&s->mat_num);
-	
+	scanf("%30s",s->mat_ser);
+	buffer();
+	printf("请输入操作用户编号：");
+	scanf("%d",&s->Job_ID);
+	buffer();
+	s->loan_time = time(NULL);
+	s->return_time = 0;
+	printf("请输入借出数量：");
+	scanf("%d",&s->loan_num);
+	buffer();
 	return s;
 }
 //在链表尾部插入节点
-void mat_push_back(node_mat* m, mat* data)
+void use_push_back(node_use* k, node_mat* m, node* l, use* data)
 {
-	node_mat* n = (node_mat*)malloc(sizeof(node_mat));
+	while(l->next != NULL && l->next->data->Job_ID != data->Job_ID) l = l->next;
+   if(l->next == NULL) 
+   {
+   		printf("您无此权限，请升级为普通用户\n");
+		return;
+   }
+	while(m->next != NULL && m->next->data->mat_ser != data->mat_ser) m = m->next;
+   if(m->next == NULL) 
+   {
+   		printf("很抱歉没有此件物资\n");
+		return;
+   }   
+	if(data->loan_num > m->next->data->mat_num)
+	{
+		printf("很抱歉，此物资数量不足！！！\n");
+		return;
+	}
+	node_use* n = (node_use*)malloc(sizeof(node_use));
 	n->data = data;
 	n->next = NULL;
+	m->next->data->mat_num -= data->loan_num;
 
 	//找到链表原来节点
-	while(m->next != NULL) m = m->next;
+	while(k->next != NULL) k = k->next;
 	//在尾部插入
-	m->next = n;
-}
-
-//在链表头部插入节点
-void push_fornt(node* l, elem_type data)
-{
-    node* n = (node*)malloc(sizeof(node));
-    n->data = data;
-    n->next = l->next;
-
-	l->next = n;
-}
-
-//任意位置位置插入
-void insert(node* l,unsigned int pos, elem_type data)
-{
-	node* n =(node*)malloc(sizeof(node));
-	n->data = data;
-	
-	while(pos-- && l->next != NULL) l = l->next;
-
-	n->next = l->next;
-	l->next = n;
-
+	k->next = n;
 }
 
 //删除某个节点
 //返回0失败，返回1成功
-char* mat_dle(void)
+char* use_dle(void)
 {
-	char* ser = (char*)malloc(30);
+	char* use = (char*)malloc(30);
 	printf("请输入物资编号：");
-	scanf("%s",ser);
-	return ser;
+	scanf("%30s",use);
+	 buffer();
+	return use;
 }
 
-int mat_remove_list(node_mat*m, char* ser)
-{
-	while(m->next != NULL && strcmp(m->next->data->mat_ser, ser)) m = m->next;
-	if(m->next == NULL) return 0;
-	node_mat* p = NULL;
-	m->next = m->next->next;
-	free(p);
-	return 1;
-}
 
-//改变节点数据
+//物资归还
 //返回0失败，返回1成功
-int mat_updata(node_mat* m, char* ser)
+int use_updata(node_mat* m, node_use* k,char* use)
 {
-	mat* s = (mat*)malloc(sizeof(mat));
-	m = m->next;
-	while(m->next != NULL && strcmp(m->next->data->mat_ser, ser)) m = m->next;
-	if(m == NULL) return 0;
-	printf("修改前物资信息：");
-	printf("物资编号：%s\n",m->data->mat_ser);
-	printf("物资名称：%s\n",m->data->mat_name);
-	printf("物资总数：%d\n",m->data->mat_sum);
-	printf("物资剩余：%d\n",m->data->mat_num);
+	k = k->next;
+	while(k != NULL && strcmp(k->data->mat_ser, use)) k = k->next;
+	if(k == NULL) return 0;
 
-	printf("请输入修改物资各项信息：");
-	printf("请输入物资编号：");
-	scanf("%s",s->mat_ser);
-	printf("请输入物资名称：");
-	scanf("%s",s->mat_name);
-	printf("请输入物资总数：");
-	getchar();
-	scanf("%d",&s->mat_sum);
-	printf("请输入物资剩余：");
-	scanf("%d",&s->mat_num);
-	
-	m->data = s;
+	printf("物资归还记录信息如下：");
+	printf("物资编号：%s\n",k->data->mat_ser);
+	printf("操作用户：%d\n",k->data->Job_ID);
+	printf("借出数量：%d\n",k->data->loan_num);
+	k->data->return_time = time(NULL);
+	while(m->next != NULL && strcmp(m->next->data->mat_ser, use)) m = m->next;
+	m->next->data->mat_num += k->data->loan_num;
+
 	return 1;
 }
 //查找节点数据
 //失败返回0，成功返回1
-int mat_find(node_mat* m, char* ser)
+int use_find(node_use* k, int Job_ID)
 {
-	m = m->next;
-	while(m != NULL && strcmp(m->data->mat_ser, ser)) m = m->next;
-	if(m == NULL) return 0;
-	printf("物资相关信息如下：");
-	printf("物资编号：%s\n",m->data->mat_ser);
-	printf("物资名称：%s\n",m->data->mat_name);
-	printf("物资总数：%d\n",m->data->mat_sum);
-	printf("物资剩余：%d\n",m->data->mat_num);
+	k = k->next;
+	while(k != NULL && k->data->Job_ID != Job_ID) k = k->next;
+	if(k == NULL) return 0;
+	printf("物资借录信息如下：");
+	printf("物资编号：%s\n",k->data->mat_ser);
+	printf("操作用户：%d\n",k->data->Job_ID);
+	printf("借出数量：%d\n",k->data->loan_num);
+
+	struct tm* loan_time = localtime(&k->data->loan_time);
+	printf("借出时间：%d年%d月%d日 %d:%02d:%02d 星期%s\n", loan_time->tm_year + 1900, loan_time->tm_mon + 1, loan_time->tm_mday, loan_time->tm_hour, loan_time->tm_min, loan_time->tm_sec, weekday[loan_time->tm_wday]);
+	
+	struct tm* now_time = localtime(&k->data->return_time);
+	printf("归还时间：%d年%d月%d日 %d:%02d:%02d 星期%s\n", now_time->tm_year + 1900, now_time->tm_mon + 1, now_time->tm_mday, now_time->tm_hour, now_time->tm_min, now_time->tm_sec, weekday[now_time->tm_wday]);
+
+
 	return 1;
 }
-
-
-//清空，删除所有存放有数据元素的节点，即删除所有元素
-void clear(node* l)
-{
-	node *p =l->next, *q =NULL;
-	while(p != NULL)
-	{
-		q = p->next;
-		free(p);
-		q = p;
-	}
-	l->next = NULL;
-}
-
-/*
-//打印链表所有的节点  
-void show(node* l)
-{
-	l = l->next;
-	while(l != NULL) printf("%d ", l->data), l = l->next;
-}
-*/
 

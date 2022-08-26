@@ -17,15 +17,16 @@ struct user
 	char sex;//0表示女，1表示男
 	char ID[19];
 	char Telephone[15];
+	char user_pass[30];
 };
 
 typedef struct use_information
 {
 	char mat_ser[30];//物资编号
-	int Job_ID;
-	int loan_time;
-	int return_time;
-	int loan_num;
+	int Job_ID;		 //操作工人编号
+	time_t loan_time;	 //借书时间
+	time_t return_time; //归还时间
+	int loan_num;    //借出数量
 }use;
 
 struct admin
@@ -33,7 +34,6 @@ struct admin
 	char name[30];
 	char pasword[30];
 };
-
 
 typedef struct node
 {
@@ -47,7 +47,7 @@ typedef struct node_mat
     struct node_mat* next;//指针域,存放后继节点指针
 }node_mat;
 
-typedef struct node_use                                                                                                                                        
+typedef struct node_use  
 {
     use* data;//用户数据域
     struct node_use* next;//指针域,存放后继节点指针
@@ -57,7 +57,7 @@ node* l;		//普通用户链表指针
 node_mat* m;	//物资信息链表指针
 node_use* k;	//借还物资信息记录链表指针
 
-
+void buffer(void);
 //用户信息相关函数
 node* create(void);
 struct user* tianjia(void);
@@ -81,5 +81,14 @@ void menu2(void);
 //密码相关函数
 void user_login(void);
 void modify_admin_info(void);
-
+//物资借还相关函数
+node_use* use_create(void);
+use* use_tianjia(void);
+void use_push_back(node_use* k, node_mat* m, node* l, use* data);
+char* use_dle(void);
+int use_updata(node_mat* m, node_use* k ,char* use);
+int use_find(node_use* k, int Job_ID);
+int use_dle1();
+void write_infor(node* s1, node_mat* s2, node_use* s3);
+void read_infor(node* s1, node_mat* s2, node_use* s3);
 #endif
