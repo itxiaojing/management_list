@@ -20,14 +20,16 @@ struct user* tianjia(void)
 	printf("请输入普通用户的各项信息：");
 	printf("请输入工号：");
 	scanf("%d",&s->Job_ID);
+	buffer();
 	printf("请输入名字：");
 	scanf("%20s",s->name);
+	buffer();
 	printf("请输入性别（0->女，1->男）：");
-
 	scanf("%c",&s->sex);
+	buffer();
 	printf("请输入身份证号码：");
-	scanf("%s",s->ID);
-	getchar();
+	scanf("%19s",s->ID);
+	buffer();
 	printf("请输入电话：");
 	scanf("%11s",s->Telephone);
 	buffer();

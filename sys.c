@@ -56,6 +56,7 @@ void menu1(void)
 	case 0:
 			system("clear");
 			printf("感谢您的使用，下次再见！\n");
+			write_infor(l,m,k);
 			exit(0);
 			break;
 		
@@ -101,7 +102,7 @@ void menu1(void)
 			
 	case 7:
 			system("clear");
-			if(!mat_find(m, mat_dle()))  printf("无此人\n");
+			if(!mat_find(m, mat_dle()))  printf("没有该物资\n");
 			mam_sys_menu2();
 			break;
 		
@@ -155,12 +156,13 @@ void menu2(void)
 		{
 	case 0:
 			printf("感谢您的使用，下次再见！\n");
+			write_infor(l,m,k);
 			exit(0);
 			break;
 		
 	case 1:
 			system("clear");
-//			sta_mod_password();
+			sta_mod_password(l);
 			mam_sys_menu3();
 			break;
 			
@@ -181,8 +183,9 @@ void menu2(void)
 			break;
 	case 5:
 			system("clear");
-
+			sta_fiad(l);
+			mam_sys_menu3();
 			break;
 		}
 	}
-}
+}	

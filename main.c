@@ -7,11 +7,12 @@
 int main()
 {
 	system("clear");
-	int op;
-	read_infor(l, m, k); 
+	int op; 
 	l = create();
 	m = mat_create();
 	k =	use_create();
+	read_infor(l, m, k);
+
 	mam_sys_menu1();
 	while(1)
 	{
@@ -38,7 +39,7 @@ int main()
 			
 			case 2:
 			system("clear");
-//			ordinary_login(l);
+			ordinary_login(l);
 			system("clear");
 			menu2();//普通用户登录界面函数
 			break ;

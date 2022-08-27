@@ -172,3 +172,115 @@ void modify_admin_info(void)
 	}
 }
 
+void ordinary_login(node* l)
+{
+    int i = 0, j = 3, k = 0;
+    char* passwd;
+    printf("欢迎登录\n");
+    while(j)
+    {
+        if(k != 0)  system("clear");
+        if(k != 0) printf("账号或密码错误,请重新输入！\n");
+        k++;
+            printf("请输入您的工号：");
+            scanf("%d",&gh);
+        //  printf("请输入密码：");
+        //  scanf("%s",passwd);
+            passwd = getpass("请输入您的密码：");
+
+            j--;
+            
+            
+            while(l->next != NULL && l->next->data->Job_ID != gh) l = l->next;
+            
+			if(l->next == NULL) 
+			{
+				printf("用户户名或密码错误！\n");
+				continue;
+			}
+            
+           if(strcmp(l->next->data->password, passwd) == 0) return;
+	}
+           
+            system("clear");
+            printf("账号或密码错误！\n");
+            printf("您已经输入三次，强制退出本系统！\n");
+            exit(0);
+}
+
+
+void sta_fiad(node* l)
+{
+    int i;
+	while(l->next != NULL && l->next->data->Job_ID != gh) l = l->next;
+	if(l->next == NULL)
+	{
+		printf("输入工号错误！！！\n");
+		return;
+	}
+	printf("您的基本信息如下：\n");
+	printf("工号：%d\n",l->next->data->Job_ID);
+	printf("姓名：%s\n",l->next->data->name);
+	printf("性别：%s\n",l->next->data->sex ==0 ? "男" : "女");
+	printf("身份证号码：%s\n",l->next->data->ID);
+    printf("电话：%s\n",l->next->data->Telephone);
+    
+    printf("\n");
+    printf("\n返回上一级请按：0\n");
+    scanf("%d",&i);
+    system("clear");
+}
+
+
+void sta_mod_password(node* l)
+{
+    int i = 0, j = 0;char* sta_passwd;
+    char sta_passwd1[30], sta_passwd2[30];		
+		while(l->next != NULL && l->next->data->Job_ID != gh) l = l->next;
+		if(l->next == NULL) 
+		{	
+			printf("账户或密码错误！！！\n");
+			j++;
+			return;    
+		}
+	
+	while(j < 2)
+	{
+		sta_passwd = getpass("请输入您密码：");
+		j++;
+		if(strcmp(l->next->data->password, sta_passwd) == 0)
+		{
+			while(1)
+			{
+				strcpy(sta_passwd1, getpass("\n请输入新密码："));
+				
+				system("clear");
+				strcpy(sta_passwd2, getpass("\n请确认新密码："));
+
+				if(strcmp(sta_passwd1, sta_passwd2) == 0)
+				{
+					strcpy(l->next->data->password, sta_passwd2);
+
+					printf("修改成功！");
+					break;
+				}   
+				else
+				{
+					printf("两次密码不相同，请重新输入！\n");
+					continue;
+				}
+			}
+		}
+		else
+		{
+			printf("原密码输入错误！！！\n");
+		}
+	}
+
+    if(i >= 3)
+    {
+    	system("clear");
+    	printf("您已经三次输入错误，本系统强行退出！\n");
+    	exit(0);
+    }
+}

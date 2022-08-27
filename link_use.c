@@ -42,7 +42,7 @@ void use_push_back(node_use* k, node_mat* m, node* l, use* data)
 	while(l->next != NULL && l->next->data->Job_ID != data->Job_ID) l = l->next;
    if(l->next == NULL) 
    {
-   		printf("您无此权限，请升级为普通用户\n");
+   		printf("请输入您的真实编号！！！\n");
 		return;
    }
 	while(m->next != NULL && m->next->data->mat_ser != data->mat_ser) m = m->next;
@@ -50,7 +50,7 @@ void use_push_back(node_use* k, node_mat* m, node* l, use* data)
    {
    		printf("很抱歉没有此件物资\n");
 		return;
-   }   
+   } 
 	if(data->loan_num > m->next->data->mat_num)
 	{
 		printf("很抱歉，此物资数量不足！！！\n");
@@ -109,12 +109,16 @@ int use_find(node_use* k, int Job_ID)
 	printf("操作用户：%d\n",k->data->Job_ID);
 	printf("借出数量：%d\n",k->data->loan_num);
 
+	
 	struct tm* loan_time = localtime(&k->data->loan_time);
 	printf("借出时间：%d年%d月%d日 %d:%02d:%02d 星期%s\n", loan_time->tm_year + 1900, loan_time->tm_mon + 1, loan_time->tm_mday, loan_time->tm_hour, loan_time->tm_min, loan_time->tm_sec, weekday[loan_time->tm_wday]);
 	
-	struct tm* now_time = localtime(&k->data->return_time);
-	printf("归还时间：%d年%d月%d日 %d:%02d:%02d 星期%s\n", now_time->tm_year + 1900, now_time->tm_mon + 1, now_time->tm_mday, now_time->tm_hour, now_time->tm_min, now_time->tm_sec, weekday[now_time->tm_wday]);
-
+	if(k->data->return_time == 0) printf("归还时间：未归还\n");
+	else
+	{
+		struct tm* now_time = localtime(&k->data->return_time);
+		printf("归还时间：%d年%d月%d日 %d:%02d:%02d 星期%s\n", now_time->tm_year + 1900, now_time->tm_mon + 1, now_time->tm_mday, now_time->tm_hour, now_time->tm_min, now_time->tm_sec, weekday[now_time->tm_wday]);
+	}
 
 	return 1;
 }

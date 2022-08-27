@@ -17,7 +17,6 @@ struct user
 	char sex;//0表示女，1表示男
 	char ID[19];
 	char Telephone[15];
-	char user_pass[30];
 };
 
 typedef struct use_information
@@ -58,6 +57,7 @@ node_mat* m;	//物资信息链表指针
 node_use* k;	//借还物资信息记录链表指针
 
 void buffer(void);
+
 //用户信息相关函数
 node* create(void);
 struct user* tianjia(void);
@@ -67,6 +67,7 @@ int updata(node* l, int);
 int find(node* l, int);
 void mam_sys_menu1(void);
 int dle(void);
+
 //物资信息相关函数
 node_mat* mat_create(void);
 mat* mat_tianjia(void);
@@ -78,9 +79,12 @@ int mat_find(node_mat* m, char* ser);
 //界面相关函数
 void menu1(void);
 void menu2(void);
+
 //密码相关函数
 void user_login(void);
 void modify_admin_info(void);
+void ordinary_login(node* l);
+
 //物资借还相关函数
 node_use* use_create(void);
 use* use_tianjia(void);
@@ -89,6 +93,10 @@ char* use_dle(void);
 int use_updata(node_mat* m, node_use* k ,char* use);
 int use_find(node_use* k, int Job_ID);
 int use_dle1();
+
 void write_infor(node* s1, node_mat* s2, node_use* s3);
 void read_infor(node* s1, node_mat* s2, node_use* s3);
+
+void sta_fiad(node* l);
+void sta_mod_password(node* l);
 #endif

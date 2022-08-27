@@ -47,22 +47,3 @@ void write_infor(node* s1, node_mat* s2, node_use* s3)
 	fclose(fp3);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
